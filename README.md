@@ -1,8 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GS-Dash
+
+A project management dashboard built with Next.js, Prisma, and Neon PostgreSQL.
 
 ## Getting Started
 
-First, run the development server:
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Configure Environment Variables
+
+Copy the example environment file and fill in your credentials:
+
+```bash
+cp .env.example .env
+```
+
+Then edit `.env` with your actual values:
+
+- **DATABASE_URL**: Your Neon PostgreSQL connection string
+- **AUTH_SECRET**: Generate with `openssl rand -base64 32`
+- **NEXTAUTH_URL**: Your app URL (default: `http://localhost:3000`)
+
+### 3. Set Up Database
+
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+### 4. Run Development Server
 
 ```bash
 npm run dev

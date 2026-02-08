@@ -3,6 +3,9 @@
 import { useState } from "react";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
+import NotificationPanel from "@/components/panels/NotificationPanel";
+import SettingsPanel from "@/components/panels/SettingsPanel";
+import "@/components/panels/panels.css";
 
 interface DashboardLayoutClientProps {
   children: React.ReactNode;
@@ -20,6 +23,8 @@ export default function DashboardLayoutClient({
   user,
 }: DashboardLayoutClientProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -37,14 +42,41 @@ export default function DashboardLayoutClient({
     if (overlay) overlay.classList.remove("open");
   };
 
+  const toggleNotifications = () => {
+    setNotificationsOpen(!notificationsOpen);
+    // Close settings if open
+    if (settingsOpen) setSettingsOpen(false);
+  };
+
+  const toggleSettings = () => {
+    setSettingsOpen(!settingsOpen);
+    // Close notifications if open
+    if (notificationsOpen) setNotificationsOpen(false);
+  };
+
   return (
     <div className="dashboard-layout">
       <div id="sidebar-overlay" className="sidebar-overlay" onClick={closeSidebar}></div>
-      <Sidebar user={user} />
+      <Sidebar user={user} onLinkClick={closeSidebar} />
       <main className="main-content">
-        <Header title={title} onMenuClick={toggleSidebar} />
+        <Header 
+          title={title} 
+          onMenuClick={toggleSidebar}
+          onNotificationsClick={toggleNotifications}
+          onSettingsClick={toggleSettings}
+        />
         <div className="page-content">{children}</div>
       </main>
+
+      {/* Slide-out Panels */}
+      <NotificationPanel 
+        isOpen={notificationsOpen} 
+        onClose={() => setNotificationsOpen(false)} 
+      />
+      <SettingsPanel 
+        isOpen={settingsOpen} 
+        onClose={() => setSettingsOpen(false)} 
+      />
     </div>
   );
 }

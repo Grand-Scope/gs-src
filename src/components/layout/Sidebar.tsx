@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
+import { useTheme } from "@/contexts/ThemeContext";
 
 interface SidebarProps {
   user: {
@@ -11,6 +13,7 @@ interface SidebarProps {
     image?: string | null;
     role?: string;
   };
+  onLinkClick?: () => void;
 }
 
 const navItems = [
@@ -83,9 +86,10 @@ const navItems = [
   },
 ];
 
-export default function Sidebar({ user }: SidebarProps) {
+export default function Sidebar({ user, onLinkClick }: SidebarProps) {
   const pathname = usePathname();
   const [showMenu, setShowMenu] = useState(false);
+  const { theme } = useTheme();
 
   const getInitials = (name: string | null | undefined) => {
     if (!name) return "U";
@@ -97,19 +101,25 @@ export default function Sidebar({ user }: SidebarProps) {
       .slice(0, 2);
   };
 
+  const handleLinkClick = () => {
+    if (onLinkClick) {
+      onLinkClick();
+    }
+  };
+
   return (
     <aside className="sidebar" id="sidebar">
       <div className="sidebar-header">
-        <Link href="/dashboard" className="sidebar-logo">
-          <div className="sidebar-logo-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 3h7v7H3z" />
-              <path d="M14 3h7v7h-7z" />
-              <path d="M3 14h7v7H3z" />
-              <path d="M14 14h7v7h-7z" />
-            </svg>
+        <Link href="/dashboard" className="sidebar-logo" onClick={handleLinkClick}>
+          <div className="sidebar-logo-img">
+            <Image
+              src={theme === 'dark' ? '/logo-dark.png' : '/logo-light.png'}
+              alt="ProjectHub Logo"
+              width={180}
+              height={56}
+              priority
+            />
           </div>
-          <span className="sidebar-logo-text">ProjectHub</span>
         </Link>
       </div>
 
@@ -122,6 +132,7 @@ export default function Sidebar({ user }: SidebarProps) {
                 key={item.href}
                 href={item.href}
                 className={`nav-item ${pathname === item.href ? "active" : ""}`}
+                onClick={handleLinkClick}
               >
                 {item.icon}
                 {item.name}
