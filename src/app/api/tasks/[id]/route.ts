@@ -6,11 +6,35 @@ interface RouteParams {
   params: Promise<{ id: string }>;
 }
 
+async function verifyTaskAccess(taskId: string, userId: string) {
+  const task = await prisma.task.findUnique({
+    where: { id: taskId },
+    include: {
+      project: {
+        select: {
+          ownerId: true,
+          members: { select: { id: true } },
+        },
+      },
+    },
+  });
+
+  if (!task) return { task: null, hasAccess: false };
+
+  const hasAccess =
+    task.creatorId === userId ||
+    task.assigneeId === userId ||
+    task.project.ownerId === userId ||
+    task.project.members.some((m) => m.id === userId);
+
+  return { task, hasAccess };
+}
+
 // GET single task
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
     const session = await auth();
-    
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -41,12 +65,21 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 export async function PUT(request: NextRequest, { params }: RouteParams) {
   try {
     const session = await auth();
-    
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const { id } = await params;
+
+    const { task: existingTask, hasAccess } = await verifyTaskAccess(id, session.user.id);
+    if (!existingTask) {
+      return NextResponse.json({ error: "Task not found" }, { status: 404 });
+    }
+    if (!hasAccess) {
+      return NextResponse.json({ error: "Access denied" }, { status: 403 });
+    }
+
     const body = await request.json();
     const { title, description, startDate, dueDate, status, priority, progress, assigneeId } = body;
 
@@ -79,12 +112,20 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
     const session = await auth();
-    
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const { id } = await params;
+
+    const { task, hasAccess } = await verifyTaskAccess(id, session.user.id);
+    if (!task) {
+      return NextResponse.json({ error: "Task not found" }, { status: 404 });
+    }
+    if (!hasAccess) {
+      return NextResponse.json({ error: "Access denied" }, { status: 403 });
+    }
 
     await prisma.task.delete({ where: { id } });
 

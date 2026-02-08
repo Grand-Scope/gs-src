@@ -29,13 +29,18 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Check localStorage first, then system preference
-    const savedTheme = localStorage.getItem("theme") as Theme | null;
-    if (savedTheme && (savedTheme === "light" || savedTheme === "dark")) {
-      setThemeState(savedTheme);
-    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setThemeState("dark");
-    }
+    const getTheme = () => {
+        const saved = localStorage.getItem("theme") as Theme | null;
+        if (saved && ["light", "dark"].includes(saved)) {
+            return saved;
+        }
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            return "dark";
+        }
+        return "light";
+    };
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setThemeState(getTheme());
     setMounted(true);
   }, []);
 

@@ -1,6 +1,7 @@
 import { signIn, auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import "./login.css";
 
 export default async function LoginPage({
@@ -23,22 +24,14 @@ export default async function LoginPage({
     <div className="login-page">
       <div className="login-card">
         <div className="login-logo">
-          <div className="login-logo-icon">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M3 3h7v7H3z" />
-              <path d="M14 3h7v7h-7z" />
-              <path d="M3 14h7v7H3z" />
-              <path d="M14 14h7v7h-7z" />
-            </svg>
-          </div>
-          <span className="login-logo-text">ProjectHub</span>
+          <Image
+            src="/Brand/logo-dark.png"
+            alt="GrandScope Logo"
+            width={48}
+            height={48}
+            className="object-contain"
+          />
+          <span className="login-logo-text">GrandScope</span>
         </div>
 
         <h1 className="login-title">Welcome back</h1>
@@ -105,7 +98,7 @@ export default async function LoginPage({
         </form>
 
         <div className="login-footer">
-          Don't have an account? <Link href="/register">Sign up</Link>
+          Don&apos;t have an account? <Link href="/register">Sign up</Link>
         </div>
       </div>
     </div>

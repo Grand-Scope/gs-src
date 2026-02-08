@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useRef, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { useTheme } from "@/contexts/ThemeContext";
 
 interface HeaderProps {
@@ -9,13 +11,92 @@ interface HeaderProps {
   onSettingsClick: () => void;
 }
 
-export default function Header({ 
-  title, 
+interface SearchProject {
+  id: string;
+  name: string;
+  status: string;
+}
+
+interface SearchTask {
+  id: string;
+  title: string;
+  status: string;
+  project: { id: string; name: string };
+}
+
+interface SearchResults {
+  projects: SearchProject[];
+  tasks: SearchTask[];
+}
+
+export default function Header({
+  title,
   onMenuClick,
   onNotificationsClick,
-  onSettingsClick 
+  onSettingsClick,
 }: HeaderProps) {
   const { theme, toggleTheme } = useTheme();
+  const router = useRouter();
+
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<SearchResults | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const search = useCallback(async (term: string) => {
+    if (term.length < 2) {
+      setResults(null);
+      setShowDropdown(false);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/search?q=${encodeURIComponent(term)}`);
+      if (res.ok) {
+        const data = await res.json();
+        setResults(data);
+        setShowDropdown(true);
+      }
+    } catch {
+      // silently fail
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setQuery(value);
+
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => search(value), 300);
+  };
+
+  const navigateTo = (path: string) => {
+    setShowDropdown(false);
+    setQuery("");
+    setResults(null);
+    router.push(path);
+  };
+
+  // Click-outside dismissal
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const hasResults =
+    results && (results.projects.length > 0 || results.tasks.length > 0);
+  const isEmpty =
+    results && results.projects.length === 0 && results.tasks.length === 0;
 
   return (
     <header className="top-header">
@@ -31,22 +112,91 @@ export default function Header({
       </div>
 
       <div className="header-right">
-        <div className="header-search">
+        <div className="header-search" ref={searchRef}>
           <svg className="header-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
-          <input type="text" placeholder="Search projects, tasks..." />
+          <input
+            type="text"
+            placeholder="Search projects, tasks..."
+            value={query}
+            onChange={handleInputChange}
+            onFocus={() => {
+              if (results) setShowDropdown(true);
+            }}
+          />
+
+          {showDropdown && (
+            <div className="search-dropdown">
+              {loading && (
+                <div className="search-dropdown-loading">Searching...</div>
+              )}
+
+              {!loading && isEmpty && (
+                <div className="search-dropdown-empty">
+                  No results for &ldquo;{query}&rdquo;
+                </div>
+              )}
+
+              {!loading && hasResults && (
+                <>
+                  {results!.projects.length > 0 && (
+                    <div className="search-dropdown-section">
+                      <div className="search-dropdown-label">Projects</div>
+                      {results!.projects.map((p) => (
+                        <button
+                          key={p.id}
+                          className="search-dropdown-item"
+                          onClick={() => navigateTo(`/dashboard/projects/${p.id}`)}
+                        >
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                          </svg>
+                          <span className="search-dropdown-item-name">{p.name}</span>
+                          <span className="search-dropdown-item-meta">
+                            {p.status.replace("_", " ")}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {results!.tasks.length > 0 && (
+                    <div className="search-dropdown-section">
+                      <div className="search-dropdown-label">Tasks</div>
+                      {results!.tasks.map((t) => (
+                        <button
+                          key={t.id}
+                          className="search-dropdown-item"
+                          onClick={() => navigateTo(`/dashboard/projects/${t.project.id}`)}
+                        >
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                            <polyline points="22 4 12 14.01 9 11.01" />
+                          </svg>
+                          <span className="search-dropdown-item-name">{t.title}</span>
+                          <span className="search-dropdown-item-meta">
+                            {t.project.name}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Theme Toggle */}
-        <button 
-          className="header-btn theme-toggle" 
+        <button
+          className="header-btn theme-toggle"
           onClick={toggleTheme}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-          title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+          aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+          title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
         >
-          {theme === 'light' ? (
+          {theme === "light" ? (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
             </svg>
@@ -66,8 +216,8 @@ export default function Header({
         </button>
 
         {/* Notifications */}
-        <button 
-          className="header-btn" 
+        <button
+          className="header-btn"
           aria-label="Notifications"
           onClick={onNotificationsClick}
         >
@@ -79,8 +229,8 @@ export default function Header({
         </button>
 
         {/* Settings */}
-        <button 
-          className="header-btn" 
+        <button
+          className="header-btn"
           aria-label="Settings"
           onClick={onSettingsClick}
         >
