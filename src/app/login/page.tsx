@@ -78,13 +78,13 @@ export default async function LoginPage({
           className="login-form"
         >
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="identifier">Email or Username</label>
             <input
-              id="email"
-              name="email"
-              type="email"
+              id="identifier"
+              name="identifier"
+              type="text"
               required
-              placeholder="you@example.com"
+              placeholder="you@example.com or username"
               className="form-input"
             />
           </div>

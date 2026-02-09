@@ -17,6 +17,7 @@ export default function RegisterPage() {
 
     const formData = new FormData(event.currentTarget);
     const name = formData.get("name") as string;
+    const username = formData.get("username") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const confirmPassword = formData.get("confirmPassword") as string;
@@ -35,6 +36,7 @@ export default function RegisterPage() {
         },
         body: JSON.stringify({
           name,
+          username,
           email,
           password,
         }),
@@ -95,6 +97,17 @@ export default function RegisterPage() {
               type="text"
               required
               placeholder="John Doe"
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              required
+              placeholder="johndoe"
               className="form-input"
             />
           </div>
