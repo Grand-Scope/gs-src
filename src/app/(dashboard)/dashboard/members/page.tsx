@@ -13,7 +13,9 @@ export default async function MembersPage() {
       _count: {
         select: {
           ownedProjects: true,
+          projects: true,
           tasks: true,
+          createdTasks: true,
         },
       },
     },
@@ -75,11 +77,11 @@ export default async function MembersPage() {
 
                 <div className="member-card-stats">
                   <div className="member-stat">
-                    <span className="member-stat-value">{member._count.ownedProjects}</span>
+                    <span className="member-stat-value">{member._count.ownedProjects + member._count.projects}</span>
                     <span className="member-stat-label">Projects</span>
                   </div>
                   <div className="member-stat">
-                    <span className="member-stat-value">{member._count.tasks}</span>
+                    <span className="member-stat-value">{member._count.tasks + member._count.createdTasks}</span>
                     <span className="member-stat-label">Tasks</span>
                   </div>
                 </div>

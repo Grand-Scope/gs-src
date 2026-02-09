@@ -9,16 +9,31 @@ export default async function DashboardPage() {
   const user = session?.user;
 
   // Fetch dashboard stats
+  const projectWhereClause = {
+    OR: [
+      { ownerId: user?.id },
+      { members: { some: { id: user?.id } } },
+    ],
+  };
+
+  const taskWhereClause = {
+    OR: [
+      { creatorId: user?.id },
+      { assigneeId: user?.id },
+      { project: { OR: [{ ownerId: user?.id }, { members: { some: { id: user?.id } } }] } },
+    ],
+  };
+
   const [projectCount, taskCount, memberCount, completedTasks] = await Promise.all([
     prisma.project.count({
-      where: { ownerId: user?.id },
+      where: projectWhereClause,
     }).catch(() => 0),
     prisma.task.count({
-      where: { creatorId: user?.id },
+      where: taskWhereClause,
     }).catch(() => 0),
     prisma.user.count().catch(() => 0),
     prisma.task.count({
-      where: { creatorId: user?.id, status: "COMPLETED" },
+      where: { ...taskWhereClause, status: "COMPLETED" },
     }).catch(() => 0),
   ]);
 
@@ -26,7 +41,7 @@ export default async function DashboardPage() {
 
   // Fetch recent projects
   const recentProjects = await prisma.project.findMany({
-    where: { ownerId: user?.id },
+    where: projectWhereClause,
     take: 4,
     orderBy: { updatedAt: "desc" },
     include: {
@@ -37,7 +52,7 @@ export default async function DashboardPage() {
   // Fetch upcoming tasks
   const upcomingTasks = await prisma.task.findMany({
     where: {
-      creatorId: user?.id,
+      ...taskWhereClause,
       status: { not: "COMPLETED" },
       dueDate: { gte: new Date() },
     },

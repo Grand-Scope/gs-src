@@ -21,6 +21,8 @@ export async function GET(request: NextRequest) {
           OR: [
             { creatorId: session.user.id },
             { assigneeId: session.user.id },
+            { project: { ownerId: session.user.id } },
+            { project: { members: { some: { id: session.user.id } } } },
           ],
         };
 
