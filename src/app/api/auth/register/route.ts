@@ -50,6 +50,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(userWithoutPassword, { status: 201 });
   } catch (error) {
+    console.error("Registration error:", error);
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: error.issues[0].message },
