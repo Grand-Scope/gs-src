@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { PasswordInput } from "@/components/PasswordInput";
 import "../login/login.css";
 
 export default function RegisterPage() {
@@ -124,10 +125,9 @@ export default function RegisterPage() {
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
-            <input
+            <PasswordInput
               id="password"
               name="password"
-              type="password"
               required
               placeholder="••••••••"
               minLength={6}
@@ -136,10 +136,9 @@ export default function RegisterPage() {
           </div>
           <div className="form-group">
             <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
+            <PasswordInput
               id="confirmPassword"
               name="confirmPassword"
-              type="password"
               required
               placeholder="••••••••"
               minLength={6}

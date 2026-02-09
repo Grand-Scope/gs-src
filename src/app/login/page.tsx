@@ -3,6 +3,7 @@ import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { PasswordInput } from "@/components/PasswordInput";
 import "./login.css";
 
 export default async function LoginPage({
@@ -90,10 +91,9 @@ export default async function LoginPage({
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
-            <input
+            <PasswordInput
               id="password"
               name="password"
-              type="password"
               required
               placeholder="••••••••"
               className="form-input"
