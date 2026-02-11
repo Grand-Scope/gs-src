@@ -29,6 +29,8 @@ pnpm-debug.log*
 .cursor/
 .vscode/
 .superdesign/
+CLAUDE.md
+.windsurfrules
 
 # Legacy/Backup
 _legacy_backup/
