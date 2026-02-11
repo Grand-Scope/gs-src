@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@import "@fontsource/inter";
+@import "@fontsource/archivo-black";
+@import "@fontsource/space-mono";
+
+@theme {
+  --color-orange: #FF4D00;
+  --color-black: #000000;
+  --color-white: #FFFFFF;
+
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Archivo Black", sans-serif;
+  --font-mono: "Space Mono", monospace;
+
+  --animate-spin-slow: spin 12s linear infinite;
+  --animate-marquee-left: marquee-left 25s linear infinite;
+  --animate-marquee-right: marquee-right 30s linear infinite;
+
+  @keyframes marquee-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes marquee-right {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+}
+
+:root {
+  --orange: #FF4D00;
+  --black: #000000;
+  --white: #FFFFFF;
+}
+
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  @apply bg-orange text-black overflow-x-hidden selection:bg-black selection:text-orange;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--orange); }

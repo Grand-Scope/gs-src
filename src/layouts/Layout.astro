@@ -1,0 +1,39 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="GrandScope — Kinetic Orange" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body>
+		<slot />
+        <script>
+            import Lenis from 'lenis'
+
+            const lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+            })
+
+            function raf(time: number) {
+              lenis.raf(time)
+              requestAnimationFrame(raf)
+            }
+
+            requestAnimationFrame(raf)
+        </script>
+	</body>
+</html>
