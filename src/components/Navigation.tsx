@@ -25,11 +25,11 @@ export default function Navigation() {
         }}
         animate={hidden ? "hidden" : "visible"}
         transition={{ duration: 0.35, ease: "easeInOut" }}
-        className="fixed top-0 left-0 right-0 z-[100] px-6 py-5 flex items-center justify-between"
+        className="fixed top-0 left-0 right-0 z-[100] px-4 py-3 md:px-6 md:py-5 flex items-center justify-between"
       >
         {/* Logo */}
         <a href="#" className="block z-50">
-          <img src="/logo-dark.png" alt="GrandScope" className="h-32 w-auto" />
+          <img src="/logo-dark.png" alt="GrandScope" className="h-16 md:h-20 w-auto" />
         </a>
 
         {/* Center Pill - Desktop */}
@@ -76,7 +76,7 @@ export default function Navigation() {
                   key={item}
                   href={`#${item.toLowerCase()}`}
                   onClick={() => setIsOpen(false)}
-                  className="font-mono text-2xl text-white font-bold uppercase hover:text-blue-500 transition-colors"
+                  className="font-mono text-xl text-white font-bold uppercase hover:text-blue-500 transition-colors"
                 >
                   {item}
                 </a>

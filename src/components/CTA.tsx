@@ -30,7 +30,7 @@ export default function CTA() {
                     transition={{ duration: 0.6 }}
                 >
                     <span className="font-mono text-[11px] font-bold uppercase text-white/50 block mb-8">[ 003 — LET'S BUILD ]</span>
-                    <h2 className="font-display text-[clamp(2rem,9vw,9rem)] md:text-[clamp(3rem,10vw,10rem)] text-white leading-[0.9] mb-12 md:mb-16">
+                    <h2 className="font-display text-[clamp(1.8rem,7vw,6rem)] md:text-[clamp(2.5rem,8vw,8rem)] text-white leading-[0.9] mb-12 md:mb-16">
                         TRANSFORM<br/>EVERYTHING
                     </h2>
                 </motion.div>
@@ -43,7 +43,7 @@ export default function CTA() {
                 >
                     <a 
                         href="#" 
-                        className="inline-flex items-center gap-4 bg-white text-black font-display text-xl md:text-3xl px-12 md:px-20 py-5 md:py-8 rounded-full tracking-[-0.02em] hover:scale-105 hover:shadow-2xl hover:bg-brand-50 transition-all duration-300"
+                        className="inline-flex items-center gap-4 bg-white text-black font-display text-base md:text-2xl px-8 md:px-16 py-4 md:py-6 rounded-full tracking-[-0.02em] hover:scale-105 hover:shadow-2xl hover:bg-brand-50 transition-all duration-300"
                     >
                         START A PROJECT
                         <ArrowRight className="w-5 h-5 md:w-7 md:h-7" />

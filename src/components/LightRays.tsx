@@ -104,7 +104,7 @@ interface Uniforms {
 export function LightRays({
   raysOrigin = 'top-center',
   raysColor = DEFAULT_COLOR,
-  raysSpeed = 1,
+  raysSpeed = 0.2,
   lightSpread = 1,
   rayLength = 2,
   pulsating = false,

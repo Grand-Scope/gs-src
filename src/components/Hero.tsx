@@ -24,7 +24,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="min-h-screen bg-black flex flex-col justify-center relative px-6 pt-24 overflow-hidden">
+    <section className="min-h-screen bg-black flex flex-col justify-center relative px-6 pt-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
             <Hyperspeed 
                 effectOptions={{
@@ -37,7 +37,7 @@ export default function Hero() {
 
         <div className="container mx-auto relative z-10 pointer-events-none">
             <motion.div style={{ y, opacity }}>
-                <h1 className="font-display text-[7vw] text-white text-center leading-[0.85]">
+                <h1 className="font-display text-[8vw] md:text-[6vw] text-white text-center leading-[0.85]">
                     {['CHASE', 'THE', 'IMPOSSIBLE'].map((line, i) => (
                         <div key={line} className="overflow-hidden">
                             <motion.div
@@ -55,8 +55,8 @@ export default function Hero() {
         </div>
 
         {/* Hero Divider + Meta Row */}
-        <div className="container mx-auto mt-12 relative z-10">
-            <div className="border-t-2 border-white"></div>
+        <div className="container mx-auto mt-6 md:mt-12 relative z-10">
+
             <div className="flex items-center justify-between py-8 px-2">
                 {/* Left: Location */}
                 <motion.div 
@@ -69,7 +69,7 @@ export default function Hero() {
                 </motion.div>
 
                 {/* Center: Press & Hold Interaction */}
-                <div className="relative w-36 h-36 flex items-center justify-center pointer-events-auto">
+                <div className="relative w-24 h-24 md:w-36 md:h-36 flex items-center justify-center pointer-events-auto">
                     <AnimatePresence mode="wait">
                         {!isSpeeding && (
                             <motion.div 
@@ -85,7 +85,7 @@ export default function Hero() {
                                 onTouchEnd={() => setIsSpeeding(false)}
                                 className="flex flex-col items-center gap-3 cursor-pointer group"
                             >
-                                <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white/10 transition-colors">
+                                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white/10 transition-colors">
                                     <Play size={20} fill="white" className="ml-1" />
                                 </div>
                                 <p className="text-[10px] font-mono font-bold text-white uppercase tracking-widest text-center">

@@ -23,6 +23,7 @@ export interface HyperspeedOptions {
   fov?: number;
   fovSpeedUp?: number;
   speedUp?: number;
+  startingSpeed?: number;
   carLightsFade?: number;
   totalSideLightSticks?: number;
   lightPairsPerRoadWay?: number;
@@ -66,6 +67,7 @@ const DEFAULT_OPTIONS: HyperspeedOptions = {
   fov: 90,
   fovSpeedUp: 150,
   speedUp: 2,
+  startingSpeed: 0.1,
   carLightsFade: 0.4,
   totalSideLightSticks: 20,
   lightPairsPerRoadWay: 40,
@@ -107,8 +109,8 @@ export const Hyperspeed = forwardRef<HTMLDivElement, HyperspeedProps>(({ effectO
     
     // Internal state for animation
     const state = {
-      speed: 1,
-      targetSpeed: 1,
+      speed: options.startingSpeed ?? 0.1,
+      targetSpeed: options.startingSpeed ?? 0.1,
       fov: options.fov || 90,
       targetFov: options.fov || 90,
     };
@@ -248,7 +250,7 @@ export const Hyperspeed = forwardRef<HTMLDivElement, HyperspeedProps>(({ effectO
     };
 
     const handleMouseUp = () => {
-      state.targetSpeed = 1;
+      state.targetSpeed = options.startingSpeed ?? 0.1;
       state.targetFov = options.fov!;
       options.onSlowDown?.();
     };
