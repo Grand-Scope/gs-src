@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
+import { LightRays } from './LightRays';
 
 function RotatingTorus() {
   const meshRef = useRef(null);
@@ -16,7 +17,7 @@ function RotatingTorus() {
   return (
     <mesh ref={meshRef}>
       <torusKnotGeometry args={[1, 0.3, 100, 16]} />
-      <meshStandardMaterial color="black" wireframe />
+      <meshStandardMaterial color="white" wireframe />
     </mesh>
   );
 }
@@ -40,10 +41,21 @@ export default function Hero() {
   };
 
   return (
-    <section className="min-h-screen bg-orange flex flex-col justify-center relative px-6 pt-24 overflow-hidden">
-        <div className="container mx-auto">
+    <section className="min-h-screen bg-black flex flex-col justify-center relative px-6 pt-24 overflow-hidden">
+        <LightRays
+          raysOrigin="top-center"
+          raysColor="#007BFF"
+          raysSpeed={1.5}
+          lightSpread={1.2}
+          rayLength={1.8}
+          followMouse={true}
+          mouseInfluence={0.3}
+          noiseAmount={0.03}
+          distortion={0.08}
+        />
+        <div className="container mx-auto relative z-10">
             <motion.div style={{ y, opacity }}>
-                <h1 className="font-display text-[16vw] text-black text-center leading-[0.85]">
+                <h1 className="font-display text-[7vw] text-white text-center leading-[0.85]">
                     {['CHASE', 'THE', 'IMPOSSIBLE'].map((line, i) => (
                         <div key={line} className="overflow-hidden">
                             <motion.div
@@ -62,14 +74,14 @@ export default function Hero() {
 
         {/* Hero Divider + Meta Row */}
         <div className="container mx-auto mt-12 relative z-10">
-            <div className="border-t-2 border-black"></div>
+            <div className="border-t-2 border-white"></div>
             <div className="flex items-center justify-between py-8 px-2">
                 {/* Left: Location */}
                 <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
-                    className="font-mono text-[11px] text-black font-bold uppercase tracking-[-0.02em]"
+                    className="font-mono text-[11px] text-white font-bold uppercase tracking-[-0.02em]"
                 >
                     Based in<br/>Dhaka, Bangladesh
                 </motion.div>
@@ -88,7 +100,7 @@ export default function Hero() {
                             <RotatingTorus />
                         </Canvas>
                     </div>
-                    <ArrowDown className="w-6 h-6 text-black relative z-10 animate-bounce" />
+                    <ArrowDown className="w-6 h-6 text-white relative z-10 animate-bounce" />
                 </motion.div>
 
                 {/* Right: Title */}
@@ -96,7 +108,7 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6 }}
-                    className="font-mono text-[11px] text-black font-bold uppercase text-right tracking-[-0.02em]"
+                    className="font-mono text-[11px] text-white font-bold uppercase text-right tracking-[-0.02em]"
                 >
                     Creative Agency<br/>AI & Digital Marketing
                 </motion.div>

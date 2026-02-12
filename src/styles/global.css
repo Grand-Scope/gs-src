@@ -5,9 +5,20 @@
 @import "@fontsource/space-mono";
 
 @theme {
-  --color-orange: #FF4D00;
+  --color-brand-50: #e5f2ff;
+  --color-brand-100: #cce5ff;
+  --color-brand-200: #99caff;
+  --color-brand-300: #66b0ff;
+  --color-brand-400: #3396ff;
+  --color-brand-500: #007bff;
+  --color-brand-600: #0063cc;
+  --color-brand-700: #004a99;
+  --color-brand-800: #003166;
+  --color-brand-900: #001933;
+  --color-brand-950: #001124;
+  --color-brand: #007bff;
   --color-black: #000000;
-  --color-white: #FFFFFF;
+  --color-white: #ffffff;
 
   --font-sans: "Inter", sans-serif;
   --font-display: "Archivo Black", sans-serif;
@@ -18,19 +29,27 @@
   --animate-marquee-right: marquee-right 30s linear infinite;
 
   @keyframes marquee-left {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
   }
   @keyframes marquee-right {
-    0% { transform: translateX(-50%); }
-    100% { transform: translateX(0); }
+    0% {
+      transform: translateX(-50%);
+    }
+    100% {
+      transform: translateX(0);
+    }
   }
 }
 
 :root {
-  --orange: #FF4D00;
+  --brand: #007bff;
   --black: #000000;
-  --white: #FFFFFF;
+  --white: #ffffff;
 }
 
 html.lenis {
@@ -46,11 +65,54 @@ html.lenis {
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  @apply bg-orange text-black overflow-x-hidden selection:bg-black selection:text-orange;
+  font-family: "Inter", sans-serif;
+  @apply bg-brand-500 text-black overflow-x-hidden selection:bg-black selection:text-brand-500;
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--black); }
-::-webkit-scrollbar-thumb { background: var(--orange); }
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--black);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--brand);
+}
+
+/* Animated metallic silver text */
+.text-silver-shimmer {
+  background:
+    linear-gradient(
+      92deg,
+      #6b6b6b 0%,
+      #9a9a9a 8%,
+      #d4d4d4 14%,
+      #ffffff 18%,
+      #e8e8e8 22%,
+      #a0a0a0 28%,
+      #787878 35%,
+      #b0b0b0 42%,
+      #e0e0e0 48%,
+      #f8f8f8 52%,
+      #c8c8c8 58%,
+      #8a8a8a 65%,
+      #a8a8a8 72%,
+      #dcdcdc 78%,
+      #ffffff 82%,
+      #c0c0c0 88%,
+      #858585 94%,
+      #6b6b6b 100%
+    );
+  background-size: 400% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: silver-shimmer 35s ease-in-out infinite;
+}
+
+@keyframes silver-shimmer {
+  0%   { background-position: 100% 50%; }
+  50%  { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}

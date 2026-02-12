@@ -1,35 +1,35 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Footer from '../layouts/Footer.astro';
-import Navigation from '../components/Navigation';
-import Hero from '../components/Hero';
-import Marquee from '../components/Marquee.svelte';
-import Mission from '../components/Mission';
-import Services from '../components/Services';
-import CTA from '../components/CTA';
+import Layout from "../layouts/Layout.astro";
+import Footer from "../layouts/Footer.astro";
+import Navigation from "../components/Navigation";
+import Hero from "../components/Hero";
+import Marquee from "../components/Marquee.svelte";
+import Mission from "../components/Mission";
+import Services from "../components/Services";
+import CTA from "../components/CTA";
 ---
 
-<Layout title="GrandScope — Kinetic Orange">
-    <!-- Navigation: Fixed, z-50 -->
-    <Navigation client:load />
-    
-    <!-- Main Content: Z-10 to scroll over sticky footer -->
-    <main class="relative z-10 bg-orange shadow-2xl">
-        <Hero client:load />
-        
-        <!-- Marquee: Svelte component -->
-        <Marquee client:visible />
-        
-        <Mission client:visible />
-        <Services client:visible />
-        <CTA client:visible />
-        
-        <!-- Spacer to ensure content pushes footer down enough initially, 
+<Layout title="GrandScope — Kinetic Blue">
+  <!-- Navigation: Fixed, z-50 -->
+  <Navigation client:load />
+
+  <!-- Main Content: Z-10 to scroll over sticky footer -->
+  <main class="relative z-10 bg-brand-500 shadow-2xl">
+    <Hero client:load />
+
+    <!-- Marquee: Svelte component -->
+    <Marquee />
+
+    <Mission client:visible />
+    <Services client:visible />
+    <CTA client:visible />
+
+    <!-- Spacer to ensure content pushes footer down enough initially, 
              although footer is sticky so it acts as reveal. 
              If CTA is the last element with bg-orange, it covers the footer until the end.
         -->
-    </main>
-    
-    <!-- Sticky Footer: Z-0 -->
-    <Footer />
+  </main>
+
+  <!-- Sticky Footer: Z-0 -->
+  <Footer />
 </Layout>

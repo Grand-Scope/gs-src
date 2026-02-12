@@ -4,7 +4,20 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				orange: '#FF4D00',
+				brand: {
+					50: '#E5F2FF',
+					100: '#CCE5FF',
+					200: '#99CAFF',
+					300: '#66B0FF',
+					400: '#3396FF',
+					500: '#007BFF', // Primary Brand Color
+					600: '#0063CC',
+					700: '#004A99',
+					800: '#003166',
+					900: '#001933',
+					950: '#001124',
+					DEFAULT: '#007BFF',
+				},
 				black: '#000000',
 				white: '#FFFFFF',
 			},
