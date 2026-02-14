@@ -38,18 +38,24 @@ export default function Hero() {
         <div className="container mx-auto relative z-10 pointer-events-none">
             <motion.div style={{ y, opacity }}>
                 <h1 className="font-display text-[8vw] md:text-[6vw] text-white text-center leading-[0.85]">
-                    {['CHASE', 'THE', 'IMPOSSIBLE'].map((line, i) => (
-                        <div key={line} className="overflow-hidden">
-                            <motion.div
-                                custom={i}
-                                initial="hidden"
-                                animate="visible"
-                                variants={variants}
-                            >
-                                {line}
-                            </motion.div>
-                        </div>
-                    ))}
+                    <div className="overflow-hidden">
+                        <motion.div custom={0} initial="hidden" animate="visible" variants={variants}>
+                            CHASE
+                        </motion.div>
+                    </div>
+                    <div className="overflow-hidden">
+                        <motion.div custom={1} initial="hidden" animate="visible" variants={variants}>
+                            THE
+                        </motion.div>
+                    </div>
+                    <div className="overflow-hidden">
+                        <motion.div custom={2} initial="hidden" animate="visible" variants={variants}>
+                            IM<span className="relative inline-block px-2 md:px-4 ml-1 md:ml-2">
+                                <span className="absolute inset-0 bg-blue-600/20 rounded-md border border-blue-500/30 backdrop-blur-[2px]" />
+                                <span className="relative text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]" style={{ WebkitTextStroke: '1px black' }}>POSSIBLE</span>
+                            </span>
+                        </motion.div>
+                    </div>
                 </h1>
             </motion.div>
         </div>
